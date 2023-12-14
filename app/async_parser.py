@@ -1,4 +1,4 @@
-from bs4 import BeautifulSoup
+from lxml import html
 
 
 async def fetch(session, url):
@@ -11,8 +11,8 @@ async def scrape(session, url):
     return await parsing(html_content)
 
 
-async def parsing(html):
-    soup = BeautifulSoup(html, 'html.parser')
-    articles = soup.find_all(class_="Paragraph_paragraph__nYCys")
-    texts = [article.text for article in articles]
+async def parsing(html_content):
+    tree = html.fromstring(html_content)
+    paragraphs = tree.cssselect('.Paragraph_paragraph__nYCys')
+    texts = [paragraph.text_content().strip() for paragraph in paragraphs]
     return ' '.join(texts)
