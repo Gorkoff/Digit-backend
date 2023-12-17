@@ -1,4 +1,11 @@
-bs4==0.0.1
 asyncio==3.4.3
 aiohttp==3.9.0
-beautifulsoup4==4.12.2
+fastapi==0.105.0
+uvicorn == 0.24.0
+pydantic
+typing == 3.7.4.3
+python-dotenv ==1.0.0
+typing-extensions
+lxml==4.9.3
+cssselect==1.2.0
+yahoofinancials == 1.19
