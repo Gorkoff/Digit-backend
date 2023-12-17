@@ -8,3 +8,4 @@ python-dotenv ==1.0.0
 typing-extensions
 lxml==4.9.3
 cssselect==1.2.0
+yahoofinancials == 1.19
