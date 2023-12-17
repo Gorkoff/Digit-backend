@@ -8,7 +8,7 @@ from app.services.yahofin import get_currency_history
 
 def date_generator(start_date, end_date, step_hours=24):
     current_date = start_date
-    while current_date <= end_date - timedelta(hours=step_hours):
+    while current_date <= end_date:
         yield f"https://tass.ru/tbp/api/v1/search?limit=20&offset=0&lang=ru&types=news&rubrics=mezhdunarodnaya" \
               f"-panorama&rubrics=ekonomika&sort=-es_updated_dt&from_date={current_date.isoformat()}&to" \
               f"_date={(current_date + timedelta(hours=step_hours)).isoformat()}"
