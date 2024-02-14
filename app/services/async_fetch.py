@@ -5,7 +5,7 @@ import random
 async def safe_fetch(session, url, semaphore):
     try:
         async with semaphore:
-            await asyncio.sleep(random.uniform(0.5, 1.5))
+            # await asyncio.sleep(random.uniform(0.5, 1.5))
             async with session.get(url) as response:
                 if response.status == 200:
                     return await response.json()
