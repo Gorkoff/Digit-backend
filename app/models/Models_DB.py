@@ -1,4 +1,4 @@
-from sqlalchemy import MetaData, Integer, String, TIMESTAMP, ForeignKey, Table, Column, text, VARCHAR, SER
+from sqlalchemy import MetaData, Integer, String, Table, Column, VARCHAR, FLOAT
 
 metadata = MetaData()
 
@@ -11,7 +11,7 @@ article = Table(
     Column("url", VARCHAR(128)),
     Column("published_dt", VARCHAR(128)),
     Column("meta_description", VARCHAR(256)),
-    Column("currency_curs", float),
-    Column("text", text),
+    Column("currency_curs", FLOAT),
+    Column("text", String),
     Column("tags", VARCHAR(256)),
 )

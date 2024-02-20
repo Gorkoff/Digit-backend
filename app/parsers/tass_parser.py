@@ -1,11 +1,11 @@
 import asyncio
-import time
-import aiohttp
+# import time
+# import aiohttp
 from datetime import datetime, timedelta
 
 from app.services.async_fetch import safe_fetch
 from app.services.async_parser import scrape
-from app.services.yahofin import get_currency_history
+# from app.services.yahofin import get_currency_history
 from config.settings_parser import MAX_REQUESTS, STEP_HOURS, TIMEOUT, LIMIT_HOST
 
 
