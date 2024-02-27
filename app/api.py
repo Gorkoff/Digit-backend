@@ -6,6 +6,7 @@ from app.parsers.tass_parser import get_tass_articles
 from config.settings_parser import LIMIT_HOST, TIMEOUT
 from app.parsers.rbk_parser import get_rbk_articles
 from app.services.yahofin import get_currency_history
+from app.services.preproc import predproc
 
 app = FastAPI()
 
