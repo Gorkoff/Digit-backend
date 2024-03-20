@@ -7,7 +7,7 @@ import aiohttp
 from app.services.async_fetch import safe_fetch
 from app.services.async_parser import scrape
 from config.settings_parser import MAX_REQUESTS, LIMIT_HOST, TIMEOUT
-from app.services.yahofin import get_currency_history
+# from app.services.parsers.yahofin import get_currency_history
 
 
 async def fetch_and_parse(session, url, semaphore, history_curs):

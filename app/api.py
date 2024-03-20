@@ -2,11 +2,11 @@ import aiohttp
 from fastapi import FastAPI
 
 from app.models.Body import Body
-from app.parsers.tass_parser import get_tass_articles
+from app.services.parsers.tass_parser import get_tass_articles
 from config.settings_parser import LIMIT_HOST, TIMEOUT
-from app.parsers.rbk_parser import get_rbk_articles
-from app.services.yahofin import get_currency_history
-from app.services.preproc import predproc
+from app.services.parsers.rbk_parser import get_rbk_articles
+from app.services.parsers.yahofin import get_currency_history
+# from app.services.data_processing.preproc import predproc
 
 app = FastAPI()
 
@@ -20,5 +20,7 @@ async def get_articles(body: Body):
     async with aiohttp.ClientSession(connector=connector, timeout=timeout) as session:
         data_articles = await get_tass_articles(body.start_date, body.end_date, session, history_curs) + await get_rbk_articles(
             body.start_date, body.end_date, session, history_curs)
-        predproc(data_articles)
         return data_articles
+
+
+
