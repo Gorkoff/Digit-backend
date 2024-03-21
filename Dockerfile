@@ -20,7 +20,7 @@ RUN pip install --no-cache-dir --upgrade -r requirements.txt
 #    rm -rf /var/lib/apt/lists/*
 #
 ## Копирование конфигурации Nginx
-#COPY ./nginx-conf/default.conf /etc/nginx/conf.d/default.conf
+#COPY ./config/default.conf /etc/nginx/conf.d/default.conf
 
 # Команда для запуска приложения
 CMD ["python", "-u", "main.py"]
