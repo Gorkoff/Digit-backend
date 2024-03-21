@@ -7,7 +7,7 @@ import aiohttp
 from app.services.async_fetch import safe_fetch
 from app.services.async_parser import scrape
 from config.settings_parser import MAX_REQUESTS, LIMIT_HOST, TIMEOUT
-from app.services.parsers.yahofin import get_currency_history
+from app.services.data_collection.yahofin import get_currency_history
 
 
 async def get_rbk_articles(start_date, end_date, session):
