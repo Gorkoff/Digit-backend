@@ -1,8 +1,8 @@
 import asyncio
-import time
+# import time
 from datetime import datetime
 
-import aiohttp
+# import aiohttp
 
 from app.services.async_fetch import safe_fetch
 from app.services.async_parser import scrape
@@ -19,20 +19,20 @@ async def fetch_and_parse(session, url, semaphore, history_curs):
         for article in response.get('items'):
             published_dt = datetime.utcfromtimestamp(article.get('publish_date_t')).strftime('%Y-%m-%d')
             parse_tasks.append(
-                scrape(session, article.get('fronturl'), ['.article__text_free', '.article__tags__item']))
+                scrape(session, article.get('fronturl'), ['.article__text_free']))
             article_metadata.append({
                 'article_id': article.get('id'),
                 'title': article.get('title'),
                 'url': article.get('fronturl'),
                 'published_dt': published_dt,
-                'meta_description': article.get('title'),
+                # 'meta_description': article.get('title'),
                 'currency_curs': history_curs.get(published_dt)
             })
         parsed_texts = await asyncio.gather(*parse_tasks, return_exceptions=True)
         for metadata, text in zip(article_metadata, parsed_texts):
             if isinstance(text, dict):
                 metadata['text'] = ' '.join(text.get('.article__text_free'))
-                metadata['tags'] = text.get('.article__tags__item')
+                # metadata['tags'] = text.get('.article__tags__item')
         return article_metadata
     return []
 

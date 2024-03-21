@@ -46,8 +46,8 @@ async def get_tass_articles(start, end, session, history_curs):
                     'title': article.get('title'),
                     'url': url,
                     'published_dt': published_dt,
-                    'tags': tags + rubrics,
-                    'meta_description': article.get('meta_description'),
+                    # 'tags': tags + rubrics,
+                    # 'meta_description': article.get('meta_description'),
                     'currency_curs': history_curs.get(f"{published_dt}")
                 })
 
