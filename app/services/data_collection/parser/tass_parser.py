@@ -42,7 +42,7 @@ async def get_tass_articles(start, end, session, history_curs):
                 tags = [tag.get('name') for tag in article.get('tags', [])]
                 rubrics = [rubric.get('name') for rubric in article.get('rubrics', [])]
                 article_metadata.append({
-                    'article_id': article.get('id'),
+                    # 'article_id': article.get('id'),
                     'title': article.get('title'),
                     'url': url,
                     'published_dt': published_dt,

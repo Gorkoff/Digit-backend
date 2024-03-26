@@ -21,7 +21,7 @@ async def fetch_and_parse(session, url, semaphore, history_curs):
             parse_tasks.append(
                 scrape(session, article.get('fronturl'), ['.article__text_free']))
             article_metadata.append({
-                'article_id': article.get('id'),
+                # 'article_id': article.get('id'),
                 'title': article.get('title'),
                 'url': article.get('fronturl'),
                 'published_dt': published_dt,
