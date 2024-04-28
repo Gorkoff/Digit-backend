@@ -11,6 +11,7 @@ app = FastAPI()
 async def get_articles_by_period(body: Body):
     return await collect_articles(body.start_date, body.end_date)
 
+
 @app.get("/get-data-processing")
 async def get_data_processing(body: Body):
     data_articles = await collect_articles(body.start_date, body.end_date)
