@@ -17,3 +17,8 @@ async def get_articles_by_period(body: Body):
 async def get_data_processing(body: Body):
     data_articles = await collect_articles(body.start_date, body.end_date)
     return preprocess_articles(data_articles)
+
+
+@app.get("/get-news-by-date")
+async def get_news_by_date(body: Body):
+    return await collect_articles(body.start_date, body.end_date)
