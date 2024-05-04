@@ -20,12 +20,6 @@ async def get_data_processing(body: Body):
     return preprocess_articles(data_articles)
 
 
-@app.get("/get-news-by-date")
-async def get_clustered_news(body: Body):
-    not_preprocessed_articles = collect_articles(body.start_date, body.end_date)
-    processed_articles = preprocess_articles_v2(not_preprocessed_articles)
-
-
 @app.get("/get-data-clustering")
-async def test():
+async def get_data_clustering(body: Body):
     return convert_to_json()
