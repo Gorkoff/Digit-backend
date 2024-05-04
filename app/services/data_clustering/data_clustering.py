@@ -2,20 +2,30 @@ import pandas as pd
 from app.services.data_collection import collect_articles
 from sklearn.feature_extraction.text import TfidfVectorizer
 from sklearn.cluster import KMeans
+import warnings
+warnings.simplefilter(action='ignore')
 
 
-def clusterize_articles(preprocessed_articles):
-    # Кластеризация статей на основе TF-IDF
-    vectorizer = TfidfVectorizer()
-    tfidf_matrix = vectorizer.fit_transform(preprocessed_articles["text"])
-
-    # Используем KMeans для кластеризации
-    kmeans = KMeans(n_clusters=2, random_state=42)  # Два кластера для примера
-    preprocessed_articles["cluster_id"] = kmeans.fit_predict(tfidf_matrix)
-
-    return preprocessed_articles
+from app.services.data_processing.preprocess_articles_v2 import preprocess_articles_v2
 
 
-def convert_to_json(clustered_articles):
-    # Преобразуем DataFrame в JSON-массив
-    return clustered_articles.to_dict(orient="records")
+def clusterize_articles():
+    NUM_CLUSTERS, corpus_embeddings, data = preprocess_articles_v2()
+    clustering_model = KMeans(n_clusters=NUM_CLUSTERS)
+    clustering_model.fit(corpus_embeddings)
+    cluster_assignment = clustering_model.labels_
+
+    data['cluster'] = cluster_assignment
+    data.head()
+    return data
+
+
+def convert_to_json():
+    data = clusterize_articles()
+    json_result = data.to_json(orient='records', force_ascii=False)
+    return json_result
+
+
+
+print(clusterize_articles())
+print(convert_to_json())

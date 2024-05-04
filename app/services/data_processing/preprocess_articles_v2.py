@@ -9,7 +9,7 @@ import nltk
 from nltk.corpus import stopwords
 
 
-def preprocess_articles_v2() -> dict:
+def preprocess_articles_v2():
     nltk.download("punkt")
     nltk.download('stopwords')
 
@@ -26,40 +26,24 @@ def preprocess_articles_v2() -> dict:
 
     data = data.dropna(subset=["text"])
     data.text.isna().sum()
-
     data = data.interpolate()
-    print('количество пустых значений:', data.currency_curs.isna().sum())
-
+    print('Количество пустых значений:', data.currency_curs.isna().sum())
     data.isna().values.any()
 
     data = data[:NUM_ARTICLES]
 
     punct = "\n\r" + string.punctuation + '—'
-
     data['text'] = data['text'].str.translate(str.maketrans('', '', punct))
-
     stop = stopwords.words('russian')
-
     data['text'] = data['text'].apply(
         lambda words: ' '.join(word.lower() for word in words.split() if word not in stop))
 
     indexes = data[data.text == ''].index
     data = data.drop(indexes)
-
     data.head()
 
     embedder = SentenceTransformer('paraphrase-multilingual-MiniLM-L12-v2')
-
     corpus = list(data['text'])
-
     corpus_embeddings = embedder.encode(corpus, show_progress_bar=True)
 
-    clustering_model = KMeans(n_clusters=NUM_CLUSTERS)
-    clustering_model.fit(corpus_embeddings)
-    cluster_assignment = clustering_model.labels_
-
-    data['cluster'] = cluster_assignment
-    data.head()
-
-    json_result = data.to_json(orient='records', force_ascii=False)
-    return json_result
+    return NUM_CLUSTERS, corpus_embeddings, data

@@ -21,10 +21,12 @@ async def get_data_processing(body: Body):
 
 
 @app.get("/get-news-by-date")
-async def get_news_by_date(body: Body):
-    return await collect_articles(body.start_date, body.end_date)
+async def get_clustered_news(body: Body):
+    not_preprocessed_articles = collect_articles(body.start_date, body.end_date)
+    processed_articles = preprocess_articles_v2(not_preprocessed_articles)
+
 
 
 @app.get("/get-data-processing-v2")
-async def test():
-    return await preprocess_articles_v2()
+async def test(body: Body):
+    return await preprocess_articles_v2(body.file_name)
