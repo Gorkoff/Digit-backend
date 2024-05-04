@@ -1,10 +1,7 @@
-import pandas as pd
-from app.services.data_collection import collect_articles
-from sklearn.feature_extraction.text import TfidfVectorizer
 from sklearn.cluster import KMeans
+
 import warnings
 warnings.simplefilter(action='ignore')
-
 
 from app.services.data_processing.preprocess_articles_v2 import preprocess_articles_v2
 

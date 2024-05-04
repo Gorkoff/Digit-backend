@@ -1,10 +1,6 @@
 import pandas as pd
 import string
-import json
-
 from sentence_transformers import SentenceTransformer
-from sklearn.cluster import KMeans
-
 import nltk
 from nltk.corpus import stopwords
 
