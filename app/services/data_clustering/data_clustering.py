@@ -24,8 +24,3 @@ def convert_to_json():
     data = clusterize_articles()
     json_result = data.to_json(orient='records', force_ascii=False)
     return json_result
-
-
-
-print(clusterize_articles())
-print(convert_to_json())

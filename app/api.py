@@ -4,7 +4,7 @@ from app.models.Body import Body
 from app.services.data_collection.collect_articles import collect_articles
 from app.services.data_processing.preprocess_articles import preprocess_articles
 from app.services.data_processing.preprocess_articles_v2 import preprocess_articles_v2
-# from app.services.data_clustering пропишу как допишу data_clustering
+from app.services.data_clustering.data_clustering import convert_to_json
 
 app = FastAPI()
 
@@ -26,7 +26,6 @@ async def get_clustered_news(body: Body):
     processed_articles = preprocess_articles_v2(not_preprocessed_articles)
 
 
-
-@app.get("/get-data-processing-v2")
-async def test(body: Body):
-    return await preprocess_articles_v2(body.file_name)
+@app.get("/get-data-clustering")
+async def test():
+    return convert_to_json()
