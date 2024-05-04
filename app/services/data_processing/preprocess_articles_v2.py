@@ -7,6 +7,7 @@ from sklearn.cluster import KMeans
 import nltk
 from nltk.corpus import stopwords
 
+
 def preprocess_articles_v2():
     nltk.download("punkt")
     nltk.download('stopwords')
@@ -31,7 +32,7 @@ def preprocess_articles_v2():
     data.isna().values.any()
 
     data = data[:NUM_ARTICLES]
-    data.shape
+    # data.shape
 
     punct = "\n\r" + string.punctuation + '—'
 
@@ -40,7 +41,8 @@ def preprocess_articles_v2():
 
     stop = stopwords.words('russian')
 
-    data['text'] = data['text'].apply(lambda words: ' '.join(word.lower() for word in words.split() if word not in stop))
+    data['text'] = data['text'].apply(
+        lambda words: ' '.join(word.lower() for word in words.split() if word not in stop))
     # data.text.iloc[50]
 
     indexes = data[data.text == ''].index
