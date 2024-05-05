@@ -20,6 +20,6 @@ async def get_data_processing(body: Body):
 
 
 @app.get("/get-data-clustering")
-async def get_data_clustering(body: Body):
-    # test_variable = body.start_date, body.end_date
-    return await convert_to_json('2015-01-03', '2015-01-04')
+def get_data_clustering(body: Body):
+    start_date, end_date = body.start_date, body.end_date
+    return convert_to_json(start_date, end_date)
