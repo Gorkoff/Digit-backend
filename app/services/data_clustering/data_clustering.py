@@ -3,11 +3,12 @@ from sklearn.cluster import KMeans
 import warnings
 warnings.simplefilter(action='ignore')
 
+from app.services.data_collection.collect_articles import articles_to_dataframe
 from app.services.data_processing.preprocess_articles_v2 import preprocess_articles_v2
 
 
-def clusterize_articles():
-    NUM_CLUSTERS, corpus_embeddings, data = preprocess_articles_v2()
+def clusterize_articles(atdf): # придумать нормальное название переменной
+    NUM_CLUSTERS, corpus_embeddings, data = preprocess_articles_v2(atdf)
     clustering_model = KMeans(n_clusters=NUM_CLUSTERS)
     clustering_model.fit(corpus_embeddings)
     cluster_assignment = clustering_model.labels_
@@ -17,7 +18,7 @@ def clusterize_articles():
     return data
 
 
-def convert_to_json():
-    data = clusterize_articles()
+def convert_to_json(start_date, end_date):
+    data = clusterize_articles(articles_to_dataframe(start_date, end_date))
     json_result = data.to_json(orient='records', force_ascii=False)
     return json_result
