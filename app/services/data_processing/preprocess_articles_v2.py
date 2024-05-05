@@ -12,21 +12,21 @@ def preprocess_articles_v2():
     NUM_ARTICLES = 400
     NUM_CLUSTERS = int(NUM_ARTICLES / 2)
 
-    data = pd.read_csv('tass_edited.csv')
+    # data = pd.read_csv('tass_edited.csv')
 
-    data = data.drop(data.columns[[0, 1, 3, 5, 6]], axis=1)
+    # data = data.drop(data.columns[[0, 1, 3, 5, 6]], axis=1)
 
     delimiter = '/. '
     data.text = data.text.str.partition(delimiter)[2]
-    data.text.head()
+    # data.text.head()
 
-    data = data.dropna(subset=["text"])
-    data.text.isna().sum()
-    data = data.interpolate()
-    print('Количество пустых значений:', data.currency_curs.isna().sum())
-    data.isna().values.any()
+    # data = data.dropna(subset=["text"])
+    # data.text.isna().sum()
+    # data = data.interpolate()
+    # print('Количество пустых значений:', data.currency_curs.isna().sum())
+    # data.isna().values.any()
 
-    data = data[:NUM_ARTICLES]
+    # data = data[:NUM_ARTICLES]
 
     punct = "\n\r" + string.punctuation + '—'
     data['text'] = data['text'].str.translate(str.maketrans('', '', punct))
@@ -36,10 +36,10 @@ def preprocess_articles_v2():
 
     indexes = data[data.text == ''].index
     data = data.drop(indexes)
-    data.head()
+    # data.head()
 
     embedder = SentenceTransformer('paraphrase-multilingual-MiniLM-L12-v2')
-    corpus = list(data['text'])
+    # corpus = list(data['text']) Очень долго. Нужно с помощью методов pandas
     corpus_embeddings = embedder.encode(corpus, show_progress_bar=True)
 
     return NUM_CLUSTERS, corpus_embeddings, data
