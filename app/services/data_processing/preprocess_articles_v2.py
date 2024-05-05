@@ -25,7 +25,7 @@ def preprocess_articles_v2(data: pd.DataFrame):
     data = data.drop(indexes)
 
     embedder = SentenceTransformer('paraphrase-multilingual-MiniLM-L12-v2')
-    corpus = list(data['text']) # очень долго будет работать, надо оптимизировать
+    corpus = list(data['text']) # очень долго будет работать, надо оптимизировать Y
     corpus_embeddings = embedder.encode(corpus, show_progress_bar=True)
 
     return NUM_CLUSTERS, corpus_embeddings, data
