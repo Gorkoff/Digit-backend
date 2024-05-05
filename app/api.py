@@ -3,7 +3,6 @@ from fastapi import FastAPI
 from app.models.Body import Body
 from app.services.data_collection.collect_articles import collect_articles
 from app.services.data_processing.preprocess_articles import preprocess_articles
-from app.services.data_processing.preprocess_articles_v2 import preprocess_articles_v2
 from app.services.data_clustering.data_clustering import convert_to_json
 
 app = FastAPI()
