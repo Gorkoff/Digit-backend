@@ -7,8 +7,8 @@ from app.services.data_collection.collect_articles import articles_to_dataframe
 from app.services.data_processing.preprocess_articles_v2 import preprocess_articles_v2
 
 
-def clusterize_articles(atdf): # придумать нормальное название переменной
-    NUM_CLUSTERS, corpus_embeddings, data = preprocess_articles_v2(atdf)
+def clusterize_articles(pandas_dataframe):
+    NUM_CLUSTERS, corpus_embeddings, data = preprocess_articles_v2(pandas_dataframe)
     clustering_model = KMeans(n_clusters=NUM_CLUSTERS)
     clustering_model.fit(corpus_embeddings)
     cluster_assignment = clustering_model.labels_
