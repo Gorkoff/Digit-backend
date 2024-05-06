@@ -7,7 +7,7 @@ from nltk.data import find
 
 
 def preprocess_articles_v2(data: pd.DataFrame):
-    nltk.download(["punkt", "stopwords"])
+    ensure_nltk_resources(["punkt", "stopwords"], ["tokenizers", "corpora"])
 
     NUM_ARTICLES = len(data)
     NUM_CLUSTERS = int(NUM_ARTICLES / 2)
@@ -31,3 +31,9 @@ def preprocess_articles_v2(data: pd.DataFrame):
     return NUM_CLUSTERS, corpus_embeddings, data
 
 
+def ensure_nltk_resources(resource_names, directories):
+    for resource_name, directory in zip(resource_names, directories):
+        try:
+            find(f"{directory}/{resource_name}")
+        except LookupError:
+            nltk.download(resource_name)
