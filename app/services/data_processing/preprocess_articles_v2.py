@@ -3,11 +3,11 @@ import string
 from sentence_transformers import SentenceTransformer
 import nltk
 from nltk.corpus import stopwords
+from nltk.data import find
 
 
 def preprocess_articles_v2(data: pd.DataFrame):
-    nltk.download("punkt")
-    nltk.download('stopwords')
+    nltk.download(["punkt", "stopwords"])
 
     NUM_ARTICLES = len(data)
     NUM_CLUSTERS = int(NUM_ARTICLES / 2)
