@@ -10,7 +10,7 @@ def preprocess_articles_v2(data: pd.DataFrame):
     ensure_nltk_resources(["punkt", "stopwords"], ["tokenizers", "corpora"])
 
     NUM_ARTICLES = len(data)
-    NUM_CLUSTERS = int(NUM_ARTICLES / 2)
+    NUM_CLUSTERS = round(NUM_ARTICLES / 2)
 
     delimiter = '/. '
     data.text = data.text.str.partition(delimiter)[2]
