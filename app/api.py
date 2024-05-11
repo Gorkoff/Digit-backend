@@ -25,4 +25,5 @@ async def get_data_clustering(body: Body):
     start_date, end_date = body.start_date, body.end_date
     data_articles = await collect_articles(start_date, end_date)
     df = pd.DataFrame(data_articles)
+    # Переделать названия
     return convert_to_json(clusterize_articles(df))
