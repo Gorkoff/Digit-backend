@@ -1,14 +1,18 @@
 asyncio==3.4.3
 aiohttp==3.9.2
 fastapi==0.109.1
-uvicorn == 0.24.0
-pydantic
-typing == 3.7.4.3
-python-dotenv ==1.0.0
+uvicorn==0.24.0
+pydantic==2.7.1
+typing==3.7.4.3
+python-dotenv==1.0.0
 typing-extensions == 4.11.0rc1
 lxml==4.9.3
 cssselect==1.2.0
-yahoofinancials == 1.19
-sqlalchemy == 2.0.27
-alembic ==1.13.1
+yahoofinancials==1.19
+sqlalchemy==2.0.27
+alembic==1.13.1
 psycopg2 ==2.9.9
+pandas==2.2.2
+scikit-learn==1.4.2
+nltk==3.8.1
+sentence-transformers==2.7.0
