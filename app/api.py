@@ -1,9 +1,10 @@
 from fastapi import FastAPI
 
+import pandas as pd
 from app.models.Body import Body
 from app.services.data_collection.collect_articles import collect_articles
 from app.services.data_processing.preprocess_articles import preprocess_articles
-from app.services.data_clustering.data_clustering import convert_to_json
+from app.services.data_clustering.data_clustering import convert_to_json, clusterize_articles
 
 app = FastAPI()
 
@@ -20,6 +21,8 @@ async def get_data_processing(body: Body):
 
 
 @app.get("/get-data-clustering")
-def get_data_clustering(body: Body):
+async def get_data_clustering(body: Body):
     start_date, end_date = body.start_date, body.end_date
-    return convert_to_json(start_date, end_date)
+    data_articles = await collect_articles(start_date, end_date)
+    df = pd.DataFrame(data_articles)
+    return convert_to_json(clusterize_articles(df))

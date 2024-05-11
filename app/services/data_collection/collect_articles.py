@@ -17,9 +17,9 @@ async def collect_articles(start_date, end_date):
             start_date, end_date, session, history_curs)
 
 
-def articles_to_dataframe(start_date, end_date):
-    loop = asyncio.new_event_loop()
-    asyncio.set_event_loop(loop)
-    data = loop.run_until_complete(collect_articles(start_date, end_date))
-    df = pd.DataFrame(data)
-    return df
+# def articles_to_dataframe(start_date, end_date):
+#     loop = asyncio.new_event_loop()
+#     asyncio.set_event_loop(loop)
+#     data = loop.run_until_complete(collect_articles(start_date, end_date))
+#     df = pd.DataFrame(data)
+#     return df
