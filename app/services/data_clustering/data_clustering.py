@@ -21,5 +21,5 @@ def clusterize_articles(pandas_dataframe):
 
 def convert_to_json(data):
     # data = clusterize_articles(articles_to_dataframe(start_date, end_date))
-    json_result = json.loads(data.to_json(orient='records', force_ascii = False))
+    json_result = json.loads(data.to_json(orient='records', force_ascii=False))
     return json_result
