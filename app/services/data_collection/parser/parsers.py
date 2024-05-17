@@ -1,6 +1,6 @@
 from sqlalchemy.future import select
 from sqlalchemy import insert
-from app.models import article
+from app.models.Models_DB import article
 from sqlalchemy.ext.asyncio import AsyncSession
 
 
