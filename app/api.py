@@ -1,16 +1,18 @@
-from fastapi import FastAPI, Depends
-
+from fastapi import FastAPI, Depends, HTTPException
 import pandas as pd
+from datetime import datetime
+
+from sqlalchemy.exc import SQLAlchemyError
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from app.models.Body import Body
 from app.services.data_base.data_base import get_session
 from app.services.data_collection.collect_articles import collect_articles
-from app.services.data_collection.parser.parsers import save_articles_to_db, fetch_articles_from_db
+from app.services.data_collection.parser.parsers import save_articles_to_db
 from app.services.data_processing.preprocess_articles import preprocess_articles
 from app.services.data_clustering.data_clustering import convert_to_json, clusterize_articles
-from app.services.data_collection.parser.rbk_parser import get_rbk_articles
-from app.services.data_collection.parser.tass_parser import get_tass_articles
+
+from sqlalchemy.sql import text
 
 app = FastAPI()
 
@@ -34,19 +36,28 @@ async def get_data_clustering(body: Body):
     # Переделать названия
     return convert_to_json(clusterize_articles(df))
 
+@app.post("/add-articles")
+async def add_articles(body: Body, session: AsyncSession = Depends(get_session)):
+    async with session.begin():  # Явное начало транзакции
+        try:
+            start_date = datetime.strptime(body.start_date, '%Y-%m-%d').date()
+            end_date = datetime.strptime(body.end_date, '%Y-%m-%d').date()
 
-@app.post("/add-articles/")
-async def add_articles(start_date: str, end_date: str, session: AsyncSession = Depends(get_session)):
-    db_articles = await fetch_articles_from_db(session, start_date, end_date)
-    if db_articles:
-        return {"status": "success", "articles": db_articles}
+            query = text("SELECT * FROM public.article WHERE published_dt BETWEEN :start_date AND :end_date")
+            result = await session.execute(query, {'start_date': start_date, 'end_date': end_date})
+            existing_articles = result.scalars().all()
 
-    rbk_articles = await get_rbk_articles(start_date, end_date, session, history_curs={})
-    tass_articles = await get_tass_articles(start_date, end_date, session, history_curs={})
-    articles = rbk_articles + tass_articles
+            if existing_articles:
+                return {"status": "success", "message": "Articles already exist in the database", "articles": existing_articles}
 
-    if articles:
-        await save_articles_to_db(session, articles)
-        return {"status": "success", "articles": articles}
-    else:
-        return {"status": "fail", "error": "No articles found"}
+            articles = await collect_articles(body.start_date, body.end_date)
+            if not articles:
+                return {"status": "fail", "error": "No new articles found"}
+
+            await save_articles_to_db(session, articles)
+            await session.commit()
+            return {"status": "success", "message": "New articles added", "articles": articles}
+
+        except Exception as e:
+            await session.rollback()
+            raise HTTPException(status_code=500, detail=f"Error processing your request: {str(e)}")
