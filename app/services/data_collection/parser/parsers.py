@@ -12,15 +12,18 @@ async def fetch_articles_from_db(session: AsyncSession, start_date: str, end_dat
     return result.fetchall()
 
 
-
 async def save_articles_to_db(session: AsyncSession, articles):
     formatted_articles = []
     for article_data in articles:
         article_dict = dict(article_data)
-        if isinstance(article_dict['published_dt'], datetime):
-            print(f"Original published_dt: {article_dict['published_dt']}")  # Отладочный вывод
-            article_dict['published_dt'] = article_dict['published_dt'].strftime('%Y-%m-%d')
-            print(f"Converted published_dt: {article_dict['published_dt']}")  # Отладочный вывод
+        if isinstance(article_dict['published_dt'], str):
+            print(f"Original published_dt (str): {article_dict['published_dt']}")  # Отладочный вывод
+            article_dict['published_dt'] = datetime.strptime(article_dict['published_dt'], '%Y-%m-%d').date()
+            print(f"Converted published_dt (date): {article_dict['published_dt']}")  # Отладочный вывод
+        elif isinstance(article_dict['published_dt'], datetime):
+            print(f"Original published_dt (datetime): {article_dict['published_dt']}")  # Отладочный вывод
+            article_dict['published_dt'] = article_dict['published_dt'].date()
+            print(f"Converted published_dt (date): {article_dict['published_dt']}")  # Отладочный вывод
         formatted_articles.append(article_dict)
 
     print(f"Formatted articles: {formatted_articles}")  # Отладочный вывод
