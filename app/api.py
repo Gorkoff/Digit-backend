@@ -36,6 +36,7 @@ async def get_data_clustering(body: Body):
     # Переделать названия
     return convert_to_json(clusterize_articles(df))
 
+
 @app.post("/add-articles")
 async def add_articles(body: Body, session: AsyncSession = Depends(get_session)):
     async with session.begin():  # Явное начало транзакции
