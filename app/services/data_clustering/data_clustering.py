@@ -14,7 +14,7 @@ def clusterize_articles(pandas_dataframe):
     clustering_model.fit(corpus_embeddings)
     cluster_assignment = clustering_model.labels_
 
-    data['cluster'] = cluster_assignment
+    data['cluster_id'] = cluster_assignment
     # data.head()
     return data
 
