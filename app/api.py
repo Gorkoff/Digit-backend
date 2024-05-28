@@ -19,13 +19,10 @@ app = FastAPI()
 
 @app.get("/get-articles-by-period")
 async def get_articles_by_period(body: Body, session: AsyncSession = Depends(get_session)):
-    async with session.begin():  # Явное начало транзакции
-        try:
-            return await collect_articles(body.start_date, body.end_date, session)
-        except Exception as e:
-            await session.rollback()
-            raise HTTPException(status_code=500, detail=f"Error processing your request: {str(e)}")
-
+    try:
+        return await collect_articles(body.start_date, body.end_date, session)
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=f"Error processing your request: {str(e)}")
 
 # @app.get("/get-data-processing")
 # async def get_data_processing(body: Body):
