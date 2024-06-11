@@ -32,11 +32,14 @@ async def get_articles_by_period(body: Body, session: AsyncSession = Depends(get
 
 @app.get("/get-data-clustering")
 async def get_data_clustering(body: Body):
-    start_date, end_date = body.start_date, body.end_date
-    data_articles = await collect_articles(start_date, end_date)
-    df = pd.DataFrame(data_articles)
-    # Переделать названия
-    return convert_to_json(clusterize_articles(df))
+    try:
+        start_date, end_date = body.start_date, body.end_date
+        data_articles = await collect_articles(start_date, end_date)
+        df = pd.DataFrame(data_articles)
+        # Переделать названия
+        return convert_to_json(clusterize_articles(df))
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=f"Error processing your request: {str(e)}")
 
 
 # @app.post("/add-articles")
