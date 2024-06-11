@@ -1,4 +1,4 @@
-from sqlalchemy import MetaData, Integer, String, Table, Column, VARCHAR, FLOAT, TIMESTAMP, Index
+from sqlalchemy import MetaData, Integer, String, Table, Column, VARCHAR, FLOAT, TIMESTAMP, Index, Text
 from sqlalchemy.ext.asyncio import AsyncEngine, create_async_engine
 from sqlalchemy.sql import text
 import asyncio
@@ -17,7 +17,7 @@ article = Table(
     Column("url", VARCHAR(128)),
     Column("published_dt", TIMESTAMP),
     Column("currency_curs", FLOAT),
-    Column("text", String),
+    Column("text", Text),
 )
 
 # Кластеризованный индекс (для PostgreSQL нужно будет использовать `postgresql_using='cluster'` в create_engine)
