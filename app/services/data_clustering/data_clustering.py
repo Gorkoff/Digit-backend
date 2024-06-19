@@ -15,11 +15,16 @@ def clusterize_articles(pandas_dataframe):
     cluster_assignment = clustering_model.labels_
 
     data['cluster_id'] = cluster_assignment
-    # data.head()
+    # Добавим имена кластеров и факторы влияния, на данный момент оставим имена пустыми
+    cluster_names = {i: "" for i in range(NUM_CLUSTERS)}
+    impact_factors = {i: 0.0 for i in range(NUM_CLUSTERS)}
+
+    data['cluster_name'] = data['cluster_id'].map(cluster_names)
+    data['impact_factor'] = data['cluster_id'].map(impact_factors)
+
     return data
 
 
 def convert_to_json(data):
-    # data = clusterize_articles(articles_to_dataframe(start_date, end_date))
     json_result = json.loads(data.to_json(orient='records', force_ascii=False))
     return json_result
