@@ -49,8 +49,15 @@ async def get_data_clustering(body: Body, session: AsyncSession = Depends(get_se
             raise HTTPException(status_code=500,
                                 detail=f"DataFrame is missing required columns. Found columns: {df.columns}")
 
-        # Переделать названия
-        return convert_to_json(clusterize_articles(df))
+        clustered_data = clusterize_articles(df)
+
+        # Группируем данные по published_dt и currency_curs
+        grouped_data = clustered_data.groupby(['published_dt', 'currency_curs']).apply(
+            lambda x: x[['cluster_id', 'cluster_name', 'impact_factor']].to_dict('records')
+        ).reset_index().rename(columns={0: 'events'})
+
+        result = {"data": grouped_data.to_dict(orient='records')}
+        return result
     except Exception as e:
         raise HTTPException(status_code=500, detail=f"Error processing your request: {str(e)}")
 
