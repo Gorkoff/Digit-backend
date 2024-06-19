@@ -31,11 +31,24 @@ async def get_articles_by_period(body: Body, session: AsyncSession = Depends(get
 
 
 @app.get("/get-data-clustering")
-async def get_data_clustering(body: Body):
+async def get_data_clustering(body: Body, session: AsyncSession = Depends(get_session)):
     try:
         start_date, end_date = body.start_date, body.end_date
-        data_articles = await collect_articles(start_date, end_date)
+        articles_response = await collect_articles(start_date, end_date, session)
+
+        if 'articles' not in articles_response:
+            raise HTTPException(status_code=500,
+                                detail="Error processing your request: 'articles' key not found in response")
+
+        data_articles = articles_response['articles']
         df = pd.DataFrame(data_articles)
+
+        # Проверим наличие необходимых столбцов
+        required_columns = ['id', 'title', 'url', 'published_dt', 'currency_curs', 'text']
+        if not all(col in df.columns for col in required_columns):
+            raise HTTPException(status_code=500,
+                                detail=f"DataFrame is missing required columns. Found columns: {df.columns}")
+
         # Переделать названия
         return convert_to_json(clusterize_articles(df))
     except Exception as e:
