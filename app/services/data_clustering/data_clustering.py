@@ -2,10 +2,12 @@ from sklearn.cluster import KMeans
 
 import json
 import warnings
+
 warnings.simplefilter(action='ignore')
 
 # from app.services.data_collection.collect_articles import articles_to_dataframe
 from app.services.data_processing.preprocess_articles_v2 import preprocess_articles_v2
+from app.services.data_clustering.get_data_impact_factor import get_data_impact_factor
 
 
 def clusterize_articles(pandas_dataframe):
@@ -15,12 +17,13 @@ def clusterize_articles(pandas_dataframe):
     cluster_assignment = clustering_model.labels_
 
     data['cluster_id'] = cluster_assignment
+    data['currency_curs'] = data['currency_curs'].interpolate(method='linear')
     # Добавим имена кластеров и факторы влияния, на данный момент оставим имена пустыми
+    data = get_data_impact_factor(data)
+
     cluster_names = {i: "" for i in range(NUM_CLUSTERS)}
-    impact_factors = {i: 0.0 for i in range(NUM_CLUSTERS)}
 
     data['cluster_name'] = data['cluster_id'].map(cluster_names)
-    data['impact_factor'] = data['cluster_id'].map(impact_factors)
 
     return data
 
