@@ -28,6 +28,8 @@ index = Index('ix_published_dt', article.c.published_dt)
 async def create_tables_and_cluster():
     async with database_engine.begin() as conn:
         await conn.run_sync(metadata.create_all)
+        # Создание индекса, если он не существует
+        await conn.run_sync(index.create)
 
     # Выполнение команды CLUSTER отдельно
     async with database_engine.connect() as conn:
